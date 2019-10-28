@@ -1,0 +1,59 @@
+﻿<Window x:Class="GradProject.Views.WithdrawShiftWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GradProject.Views"
+        xmlns:localConverter="clr-namespace:GradProject.Converters"
+        mc:Ignorable="d"
+        Title="Изъятие средств" 
+        Height="150" Width="450"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="#292728">
+    <Window.Resources>
+        <localConverter:StringToDecimalConverter x:Key="StringToDecimalConverter" />
+        <Style TargetType="TextBox">
+            <Setter Property="FontFamily" Value="Century Gothic"/>
+            <Setter Property="FontSize" Value="20 pt"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Button">
+            <Style.Setters>
+                <Setter Property="Background" Value="#B20837"/>
+                <Setter Property="FontFamily" Value="Century Gothic"/>
+                <Setter Property="FontSize" Value="25 pt"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Black" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="Century Gothic"/>
+            <Setter Property="FontSize" Value="16 pt"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="5,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2.5*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="К изъятию"/>
+        <TextBox x:Name="MoneyTypeIn" Text="{Binding MoneyToAddOrWithdraw, Converter={StaticResource StringToDecimalConverter}, Mode=OneWayToSource}" Grid.Row="0" Grid.Column="1" PreviewTextInput="MoneyTypeInPreviewTextInput"/>
+        <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="Изъять" Click="CloseDialog"/>
+    </Grid>
+</Window>

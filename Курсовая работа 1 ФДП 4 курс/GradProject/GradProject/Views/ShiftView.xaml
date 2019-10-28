@@ -1,0 +1,94 @@
+﻿<Page x:Class="GradProject.Views.ShiftView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GradProject.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="1055"
+      Title="ShiftView">
+    <Page.Resources>
+        <Style TargetType="Label" x:Key="LeftLabel">
+            <Setter Property="Margin" Value="20,0,0,0"/>
+            <Setter Property="FontFamily" Value="Century Gothic"/>
+            <Setter Property="FontSize" Value="20 pt"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Label" x:Key="RightLabel">
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="FontFamily" Value="Century Gothic"/>
+            <Setter Property="FontSize" Value="20 pt"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Canvas">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="#e3e3e3"/>
+        </Style>
+        <Style x:Key="ShiftButtons" TargetType="Button">
+            <Style.Setters>
+                <Setter Property="Background" Value="#5b7cf9"/>
+                <Setter Property="FontFamily" Value="Century Gothic"/>
+                <Setter Property="FontSize" Value="20 pt"/>
+                <Setter Property="FontWeight" Value="DemiBold"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="#e3e3e3"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="StartButton" TargetType="Button" BasedOn="{StaticResource ShiftButtons}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ButtonIsEnabled}" Value="True">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#e3e3e3">
+        <Grid x:Name="StatusGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Width="656" Height="500">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Content="Денег в кассе" Style="{StaticResource LeftLabel}"/>
+            <Label x:Name="currentCash" Grid.Column="1" Grid.Row="0" Style="{StaticResource RightLabel}" Content="{Binding CurrentShift.CurrentCash}"/>
+            <Button x:Name="AddBtn" Content="Добавить" Grid.Column="0" Grid.Row="1" Style="{StaticResource ShiftButtons}" IsEnabled="{Binding ButtonIsEnabled}" Command="{Binding AddMoney}"/>
+            <Button x:Name="ExtractBtn" Content="Изъять" Grid.Column="1" Grid.Row="1" Style="{StaticResource ShiftButtons}" IsEnabled="{Binding ButtonIsEnabled}" Command="{Binding WithdrawMoney}"/>
+            <Canvas Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
+            <Label Grid.Column="0" Grid.Row="3" Content="Продажи" Style="{StaticResource LeftLabel}"/>
+            <Label x:Name="cashReceived" Grid.Column="1" Grid.Row="3" Content="{Binding CurrentShift.CashReceived}" Style="{StaticResource RightLabel}"/>
+            <Label Grid.Column="0" Grid.Row="4" Content="Возвраты" Style="{StaticResource LeftLabel}"/>
+            <Label x:Name="cashReturned" Grid.Column="1" Grid.Row="4" Content="{Binding CurrentShift.CashReturned}" Style="{StaticResource RightLabel}"/>
+            <Label Grid.Column="0" Grid.Row="5" Content="Внесения" Style="{StaticResource LeftLabel}"/>
+            <Label x:Name="cashAdded" Grid.Column="1" Grid.Row="5" Content="{Binding CurrentShift.CashAdded}" Style="{StaticResource RightLabel}"/>
+            <Label Grid.Column="0" Grid.Row="6" Content="Изъятия" Style="{StaticResource LeftLabel}"/>
+            <Label x:Name="cashWithdrawn" Grid.Column="1" Grid.Row="6" Content="{Binding CurrentShift.CashWithdrawn}" Style="{StaticResource RightLabel}"/>
+            <Canvas Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"/>
+            <Button x:Name="StartBtn" Content="Начать смену" Grid.Column="0" Grid.Row="8" Style="{StaticResource StartButton}" Command="{Binding AuthWndOpenCommand}"/>
+            <Button x:Name="FinishBtn" Content="Завершить смену" Grid.Column="1" Grid.Row="8" Style="{StaticResource ShiftButtons}" IsEnabled="{Binding ButtonIsEnabled}" Command="{Binding EndShift}"/>
+        </Grid>
+    </Grid>
+</Page>
