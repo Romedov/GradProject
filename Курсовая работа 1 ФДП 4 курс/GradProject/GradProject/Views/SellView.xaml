@@ -78,7 +78,7 @@
                 <ColumnDefinition Width="200 px"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="Код товара:" Style="{StaticResource LblStyle}" Margin="5,20,0,0" Background="#e3e3e3" Height="40" VerticalAlignment="Top"/>
-            <TextBox x:Name="ArticleInput" Grid.Column="1" Text="{Binding IId, Mode=OneWayToSource}" Style="{StaticResource TxbStyle}" PreviewTextInput="ValidatePTI" PreviewKeyDown="ValidatePKD" Margin="0,20,10,0" FontSize="18 pt" VerticalAlignment="Top" Height="40"/>
+            <TextBox x:Name="ArticleInput" Grid.Column="1" Text="{Binding IId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TxbStyle}" PreviewTextInput="ValidatePTI" PreviewKeyDown="ValidatePKD" Margin="0,20,10,0" FontSize="18 pt" VerticalAlignment="Top" Height="40"/>
             <Button Grid.Column="2" Content="Найти" Command="{Binding AddCommand}" Style="{StaticResource BtnStyle}" VerticalAlignment="Top" MinWidth="150" Height="40" Margin="0,20,10,0"/>
         </Grid>
 
@@ -102,21 +102,21 @@
             <Rectangle Grid.Row="0" Grid.ColumnSpan="4"/>
             <Label Grid.Row="1" Grid.ColumnSpan="4" Content="Свободная цена" Style="{StaticResource LblStyle}"/>
             <Rectangle Grid.Row="2" Grid.ColumnSpan="4"/>
-            <TextBox x:Name="Price" Grid.Row="3" Grid.ColumnSpan="4" Style="{StaticResource TxbStyle}" IsReadOnly="True" />
-            <Button Grid.Column="0" Grid.Row="4" Content="7" Style="{StaticResource BtnStyle}"/>
-            <Button Grid.Column="1" Grid.Row="4" Content="8" Style="{StaticResource BtnStyle}"/>
-            <Button Grid.Column="2" Grid.Row="4" Content="9" Style="{StaticResource BtnStyle}"/>
-            <Button x:Name="ClearAll" Grid.Column="3" Grid.Row="4" Grid.RowSpan="2" Content="X" Style="{StaticResource BtnStyle}"/>
-            <Button Grid.Column="0" Grid.Row="5" Content="4" Style="{StaticResource BtnStyle}"/>
-            <Button Grid.Column="1" Grid.Row="5" Content="5" Style="{StaticResource BtnStyle}"/>
-            <Button Grid.Column="2" Grid.Row="5" Content="6" Style="{StaticResource BtnStyle}"/>
-            <Button x:Name="AddBtn" Grid.Column="3" Grid.Row="6" Grid.RowSpan="2" Content="+" Style="{StaticResource BtnStyle}"/>
-            <Button Grid.Column="0" Grid.Row="6" Content="1" Style="{StaticResource BtnStyle}"/>
-            <Button Grid.Column="1" Grid.Row="6" Content="2" Style="{StaticResource BtnStyle}"/>
-            <Button Grid.Column="2" Grid.Row="6" Content="3" Style="{StaticResource BtnStyle}"/>
-            <Button Grid.Column="0" Grid.Row="7" Content="." Style="{StaticResource BtnStyle}"/>
-            <Button Grid.Column="1" Grid.Row="7" Content="0" Style="{StaticResource BtnStyle}"/>
-            <Button x:Name="BckSpc" Grid.Column="2" Grid.Row="7" Content="BckSpc" Style="{StaticResource BtnStyle}"/>
+            <TextBox x:Name="Price" Grid.Row="3" Grid.ColumnSpan="4" Style="{StaticResource TxbStyle}" Text="{Binding FreePrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+            <Button Grid.Column="0" Grid.Row="4" Content="7" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button Grid.Column="1" Grid.Row="4" Content="8" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button Grid.Column="2" Grid.Row="4" Content="9" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button x:Name="ClearAll" Grid.Column="3" Grid.Row="4" Grid.RowSpan="2" Content="X" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button Grid.Column="0" Grid.Row="5" Content="4" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button Grid.Column="1" Grid.Row="5" Content="5" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button Grid.Column="2" Grid.Row="5" Content="6" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button x:Name="AddBtn" Grid.Column="3" Grid.Row="6" Grid.RowSpan="2" Content="+" Command="{Binding AddFreeCommand}" Style="{StaticResource BtnStyle}"/>
+            <Button Grid.Column="0" Grid.Row="6" Content="1" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button Grid.Column="1" Grid.Row="6" Content="2" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button Grid.Column="2" Grid.Row="6" Content="3" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button Grid.Column="0" Grid.Row="7" Content="," Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button Grid.Column="1" Grid.Row="7" Content="0" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}" Click="OnClick" Style="{StaticResource BtnStyle}"/>
+            <Button x:Name="BckSpc" Grid.Column="2" Grid.Row="7" Content="BckSpc" Command="{Binding KeyboardCommand}" CommandParameter="{Binding KeyBtn}"  Click="OnClick" Style="{StaticResource BtnStyle}"/>
         </Grid>
 
         <Grid x:Name="Check" Grid.Column="1" Grid.RowSpan="2"  Background="White">
@@ -147,14 +147,14 @@
                 </ScrollViewer>
                 <Rectangle Grid.Row="3"/>
                 <Label Grid.Row="4" x:Name="Conclusion" Content="Итог: 0" Style="{StaticResource LblStyle}"/>
-                <Grid x:Name="CheckItemEditor" Grid.Row="5" DataContext="{Binding SelectedItem}">
+                <Grid x:Name="CheckItemEditor" Grid.Row="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.ColumnSpan="2" Style="{StaticResource TxbStyle}" Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button Content="X" Grid.Column="2" Style="{StaticResource BtnStyle}"/>
+                    <TextBox Grid.ColumnSpan="2" DataContext="{Binding SelectedItem}" Style="{StaticResource TxbStyle}" Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="ValidatePTI" PreviewKeyDown="ValidatePKD"/>
+                    <Button Content="X" Grid.Column="2" Command="{Binding RemoveCommand}" CommandParameter="{Binding SelectedItem}" Style="{StaticResource BtnStyle}"/>
                 </Grid>
                 <Button x:Name="Pay" Grid.Row="6" Content="Оплатить" Style="{StaticResource BtnStyle}"/>
             </Grid>

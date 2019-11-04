@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GradProject.Models
 {
-    public class ItemSearchEventArgs
+    public class ItemSearchEventArgs: EventArgs
     {
         #region Fields
         #endregion

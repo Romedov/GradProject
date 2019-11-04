@@ -36,18 +36,35 @@ namespace GradProject.ViewModels
         }
         #endregion
         #region Private fields
-        private Item _selectedItem = null;
+        private ItemParent _selectedItem = null;
         private RelayCommand _relayCommand;
         private Item _item;
+        private string _freePrice="";
+        private string _iId="";
+        private Button _keyBtn;
         #endregion
         #region Public properties
-        public ObservableCollection<Item> ItemsToSell { get; set; } = new ObservableCollection<Item>();
-        public Item SelectedItem
+        public ObservableCollection<ItemParent> ItemsToSell { get; set; } = new ObservableCollection<ItemParent>();
+        public ItemParent SelectedItem
         {
             get { return _selectedItem; }
             set { _selectedItem = value; OnPropertyChanged(); }
         }
-        public string IId { get; set; }
+        public string FreePrice
+        {
+            get { return _freePrice; }
+            set { _freePrice = value; OnPropertyChanged(); }
+        }
+        public Button KeyBtn
+        {
+            get { return _keyBtn; }
+            set { _keyBtn = value; OnPropertyChanged(); }
+        }
+        public string IId
+        {
+            get { return _iId; }
+            set { _iId = value; OnPropertyChanged(); }
+        }
         #endregion
         #region Commands
         public RelayCommand AddCommand
@@ -58,13 +75,36 @@ namespace GradProject.ViewModels
                 return _relayCommand ??
                     (_relayCommand = new RelayCommand(obj =>
                     {
-                        //MessageBox.Show(IId);
                         Item item = Item.GetItem(this, IId);
                         if (item != null)
                         {
-                            ItemsToSell.Add(item);
+                            ItemParent prevItem = ItemsToSell.FirstOrDefault(i => i.IId == item.IId);
+                            if(prevItem == null)
+                            {
+                                ItemsToSell.Add(item);
+                            }
+                            else
+                            {
+                                ItemsToSell.FirstOrDefault(i => i.IId == item.IId).Number++;
+                            } 
                         }
-                    }));
+                        IId = "";
+                    },
+                    (obj) => IId.Length > 0));
+            }
+        }
+        public RelayCommand AddFreeCommand
+        {
+            get
+            {
+                _relayCommand = null;
+                return _relayCommand ??
+                    (_relayCommand = new RelayCommand(obj =>
+                    {
+                        ItemsToSell.Add(new FreeItem(App.ShiftVM.CurrentShift.SId, Convert.ToDecimal(FreePrice)));
+                        FreePrice = "";
+                    },
+                    (obj) => FreePrice.Length > 0));
             }
         }
         public RelayCommand RemoveCommand
@@ -75,13 +115,52 @@ namespace GradProject.ViewModels
                 return _relayCommand ??
                     (_relayCommand = new RelayCommand(obj =>
                     {
-                        Item item = obj as Item;
+                        ItemParent item = obj as ItemParent;
                         if (item != null)
                         {
                             ItemsToSell.Remove(item);
                         }
                     },
                     (obj) => ItemsToSell.Count > 0));
+            }
+        }
+        public RelayCommand KeyboardCommand
+        {
+            get
+            {
+                _relayCommand = null;
+                return _relayCommand ??
+                    (_relayCommand = new RelayCommand(obj =>
+                    {
+                        Button btn = obj as Button;
+                        switch (btn.Content)
+                        {
+                            case "X":
+                                FreePrice = "";
+                                break;
+                            case "BckSpc":
+                                if(FreePrice.Length>0)
+                                {
+                                    FreePrice = FreePrice.Remove(FreePrice.Length - 1);
+                                }
+                                break;
+                            case ",":
+                                if (FreePrice.Contains(',')) { break; }
+                                FreePrice += btn.Content;
+                                break;
+                            default:
+                                if (FreePrice.IndexOf(',') == 0)
+                                {
+                                    break;
+                                }
+                                if (FreePrice.IndexOf(',') != -1 && FreePrice.Substring(FreePrice.IndexOf(',')).Length == 3)
+                                {
+                                    break;
+                                }
+                                FreePrice += btn.Content;
+                                break;
+                        }
+                    }));
             }
         }
         #endregion

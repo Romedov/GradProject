@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>cash.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -69,6 +72,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\StringToDecimalConverter.cs" />
+    <Compile Include="Models\ItemParent.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ReturnViewModel.cs" />
     <Compile Include="ViewModels\SellViewModel.cs" />
@@ -134,7 +138,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="cash.ico" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AddShiftWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

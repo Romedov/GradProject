@@ -10,7 +10,7 @@ using System.Windows;
 using GradProject.Models;
 namespace GradProject
 {
-    public partial class Item : INotifyPropertyChanged
+    public partial class Item : ItemParent, INotifyPropertyChanged
     {
         #region Constructors
         public Item() { }
@@ -32,15 +32,15 @@ namespace GradProject
         #region Public properties
         [Key]
         [StringLength(50)]
-        public string IId { get; private set; }
+        public override string IId{ get; protected set; }
 
         [Required]
         [StringLength(100)]
-        public string Name { get; private set; }
+        public override string Name { get; protected set; }
 
-        public decimal Price { get; private set; }
+        public override decimal Price { get; protected set; }
 
-        public long Number
+        public override long Number
         {
             get { return _number; }
             set { _number = value; OnPropertyChanged(); }
@@ -63,7 +63,7 @@ namespace GradProject
                 {
                     db.DBConnectionCheck();
                     item = db.Items.FirstOrDefault(i => i.IId == iId);
-                    item.Number = 1;
+                    /*
                     if (item.Discount != 0)
                     {
                         item.Price *= 1 - item.Discount / 100;
@@ -72,8 +72,10 @@ namespace GradProject
                     {
                         item.Price = 0;
                     }
+                    */
                     if (item != null)
                     {
+                        item.Number = 1;
                         ItemSearching?.Invoke(sender, new ItemSearchEventArgs($"Товар с идентификатором {iId} добавлен в чек!", true));
                         return item;
                     }
@@ -90,6 +92,11 @@ namespace GradProject
                     return null;
                 }
             }
+        }
+
+        public override void SellItem(Shift currShift)
+        {
+            
         }
         //public bool SellItem()
         //{
@@ -109,6 +116,6 @@ namespace GradProject
 
         //    }
         //}
-#endregion
+        #endregion
     }
 }

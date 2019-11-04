@@ -139,6 +139,7 @@ namespace GradProject.ViewModels
                                 using(CashboxDataContext db = new CashboxDataContext())
                                 {
                                     db.FreeItems.Add(new FreeItem(CurrentShift.SId));
+                                    db.SaveChanges();
                                 }
                             }
                         }

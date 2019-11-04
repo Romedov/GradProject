@@ -35,5 +35,10 @@ namespace GradProject.Views
             if (e.Key == Key.Space)
                 e.Handled = true;
         }
+        private void OnClick(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            App.SellVM.KeyBtn = btn;
+        }
     }
 }
