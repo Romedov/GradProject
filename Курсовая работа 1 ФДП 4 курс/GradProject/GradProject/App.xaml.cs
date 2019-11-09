@@ -1,11 +1,6 @@
-﻿using GradProject.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
+using GradProject.ViewModels;
 
 namespace GradProject
 {
@@ -16,5 +11,6 @@ namespace GradProject
     {
         public static ShiftViewModel ShiftVM { get; private set; } = new ShiftViewModel();
         public static SellViewModel SellVM { get; private set; } = new SellViewModel();
+        public static ReturnViewModel ReturnVM { get; private set; } = new ReturnViewModel();
     }
 }
