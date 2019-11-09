@@ -16,15 +16,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GradProject.Models;
+using GradProject.Views;
 
 namespace GradProject.ViewModels
 {
     /// <summary>
     /// Логика взаимодействия для SellView.xaml
     /// </summary>
-    public class SellViewModel : INotifyPropertyChanged
+    public class SellViewModel : INotifyPropertyChanged //VM продажи
     {
-        //добавить команду продажи
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
@@ -38,36 +38,49 @@ namespace GradProject.ViewModels
         #region Private fields
         private ItemParent _selectedItem = null;
         private RelayCommand _relayCommand;
-        private Item _item;
         private string _freePrice="";
         private string _iId="";
         private Button _keyBtn;
+        private Window _wnd = null;
+        private decimal _moneyToPay=0;
+        decimal _itemsPriceSum = 0;
+        decimal _conclusion = 0;
         #endregion
         #region Public properties
-        public ObservableCollection<ItemParent> ItemsToSell { get; set; } = new ObservableCollection<ItemParent>();
-        public ItemParent SelectedItem
+        public ObservableCollection<ItemParent> ItemsToSell { get; set; } = new ObservableCollection<ItemParent>(); //список продаваемых товаров
+        public ItemParent SelectedItem //выбранный товар
         {
             get { return _selectedItem; }
             set { _selectedItem = value; OnPropertyChanged(); }
         }
-        public string FreePrice
+        public decimal Conclusion //итоговая цена
+        {
+            get { return _conclusion; }
+            set { _conclusion = value; OnPropertyChanged(); }
+        }
+        public decimal MoneyToPay //средства к оплате
+        {
+            get { return _moneyToPay; }
+            set { _moneyToPay = value; OnPropertyChanged(); }
+        }
+        public string FreePrice //цена товара, нерегистрируемого в БД
         {
             get { return _freePrice; }
             set { _freePrice = value; OnPropertyChanged(); }
         }
-        public Button KeyBtn
+        public Button KeyBtn //нажатая на клавиатуре ввода цены товара, нерегистрируемого в БД, кнопка
         {
             get { return _keyBtn; }
             set { _keyBtn = value; OnPropertyChanged(); }
         }
-        public string IId
+        public string IId //id товара
         {
             get { return _iId; }
             set { _iId = value; OnPropertyChanged(); }
         }
         #endregion
         #region Commands
-        public RelayCommand AddCommand
+        public RelayCommand AddCommand //добавление товара в список
         {
             get
             {
@@ -86,14 +99,15 @@ namespace GradProject.ViewModels
                             else
                             {
                                 ItemsToSell.FirstOrDefault(i => i.IId == item.IId).Number++;
-                            } 
+                            }
+                            Conclusion = ItemsToSell.Conclude();
                         }
                         IId = "";
                     },
                     (obj) => IId.Length > 0));
             }
-        }
-        public RelayCommand AddFreeCommand
+        } 
+        public RelayCommand AddFreeCommand //добавление "свободного" товара в список
         {
             get
             {
@@ -102,12 +116,13 @@ namespace GradProject.ViewModels
                     (_relayCommand = new RelayCommand(obj =>
                     {
                         ItemsToSell.Add(new FreeItem(App.ShiftVM.CurrentShift.SId, Convert.ToDecimal(FreePrice)));
+                        Conclusion = ItemsToSell.Conclude();
                         FreePrice = "";
                     },
                     (obj) => FreePrice.Length > 0));
             }
         }
-        public RelayCommand RemoveCommand
+        public RelayCommand RemoveCommand //удаление товара из списка
         {
             get
             {
@@ -119,12 +134,79 @@ namespace GradProject.ViewModels
                         if (item != null)
                         {
                             ItemsToSell.Remove(item);
+                            if (ItemsToSell.Count() > 0)
+                            {
+                                ItemsToSell.Conclude();
+                            }
+                            else
+                            {
+                                Conclusion = 0;
+                            }
                         }
                     },
                     (obj) => ItemsToSell.Count > 0));
             }
         }
-        public RelayCommand KeyboardCommand
+        public RelayCommand SellCommand //продажа
+        {
+            get
+            {
+                _relayCommand = null;
+                return _relayCommand ??
+                    (_relayCommand = new RelayCommand(obj =>
+                    {
+                        bool isEnough = true;
+                        foreach (var item in ItemsToSell)
+                        {
+                            if (item.IId != "Free")
+                            {
+                                isEnough = ((Item)item).NumberCheck();
+                                if (!isEnough) { break; }
+                            }
+                        }
+                        if (isEnough)
+                        {
+                            _wnd = new PayBackWindow();
+                            _itemsPriceSum = ItemsToSell.Sum(i => i.Price);
+                            _wnd.ShowDialog();
+                        }
+                    },
+                    (obj) => ItemsToSell.Count > 0));
+            }
+        }
+        public RelayCommand PayCashCommand //оплата
+        {
+            get
+            {
+                _relayCommand = null;
+                return _relayCommand ??
+                    (_relayCommand = new RelayCommand(obj =>
+                    {
+                        var currShift = App.ShiftVM.CurrentShift;
+                        if (MoneyToPay > currShift.CurrentCash)
+                        {
+                            MessageBox.Show($"В кассе недостаточно денег для сдачи: {MoneyToPay - currShift.CurrentCash} руб.");
+                        }
+                        else
+                        {
+                            foreach(var item in ItemsToSell)
+                            {
+                                item.SellItemAsync(currShift);
+                            }
+                            _wnd.Close();
+                            _wnd = null;
+                            ItemsToSell.Clear();
+                            if ((Conclusion - MoneyToPay) != 0)
+                            {
+                                MessageBox.Show(string.Format("Выдайте сдачу: {0} руб.", MoneyToPay - Conclusion));
+                            }
+                            Conclusion = 0;
+                        }
+                    },
+                    (obj) => MoneyToPay >= _itemsPriceSum));
+            }
+        }
+        public RelayCommand KeyboardCommand //команда ввода "свободного" товара
         {
             get
             {
@@ -169,7 +251,7 @@ namespace GradProject.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
-        private void OnItemSearch(object sender, ItemSearchEventArgs e)
+        private void OnItemSearch(object sender, ItemSearchEventArgs e) //обработчик события поиска товара в БД
         {
             if (e.IsSuccessful == false)
             {

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace GradProject
 {
-    public partial class CashboxDataContext : DbContext
+    public partial class CashboxDataContext : DbContext //класс-кнотекст данных
     {
         public CashboxDataContext()
             : base("name=CashboxDataContext")
@@ -19,7 +19,7 @@ namespace GradProject
         public virtual DbSet<Shift> Shifts { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
-        public void DBConnectionCheck()
+        public void DBConnectionCheck() //проверка соединения с БД
         {
             if (!this.Database.Exists())
             {

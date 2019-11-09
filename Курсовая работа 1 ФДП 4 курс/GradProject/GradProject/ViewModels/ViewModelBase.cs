@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace GradProject.ViewModels
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged //базовый класс VM
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

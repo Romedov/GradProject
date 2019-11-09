@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GradProject
 {
-    public abstract class ItemParent
+    public abstract class ItemParent //родительский класс товаров
     {
-        public abstract string IId { get; protected set; }
+        public abstract string IId { get; protected set; } //id
 
-        public abstract string Name { get; protected set; }
+        public abstract string Name { get; protected set; } //наименование
 
-        public abstract decimal Price { get; protected set; }
+        public abstract decimal Price { get; protected set; } //цена
 
-        public abstract long Number { get; set; }
+        public abstract long Number { get; set; } //количество
 
-        public abstract void SellItem(Shift currShift);
+        public abstract void SellItemAsync(Shift currShift); //продажа
+
+        public abstract void ReturnItemAsync(Shift currShift); //возврат
     }
 }

@@ -146,17 +146,17 @@
                     </ListBox>
                 </ScrollViewer>
                 <Rectangle Grid.Row="3"/>
-                <Label Grid.Row="4" x:Name="Conclusion" Content="Итог: 0" Style="{StaticResource LblStyle}"/>
+                <Label Grid.Row="4" x:Name="Conclusion" Content="{Binding Path=Conclusion}" ContentStringFormat="Итог: {0} руб." Style="{StaticResource LblStyle}"/>
                 <Grid x:Name="CheckItemEditor" Grid.Row="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.ColumnSpan="2" DataContext="{Binding SelectedItem}" Style="{StaticResource TxbStyle}" Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="ValidatePTI" PreviewKeyDown="ValidatePKD"/>
+                    <TextBox Grid.ColumnSpan="2" DataContext="{Binding SelectedItem}" Style="{StaticResource TxbStyle}" Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="ValidatePTI" PreviewKeyDown="ValidatePKD" KeyUp="ConcludeKU"/>
                     <Button Content="X" Grid.Column="2" Command="{Binding RemoveCommand}" CommandParameter="{Binding SelectedItem}" Style="{StaticResource BtnStyle}"/>
                 </Grid>
-                <Button x:Name="Pay" Grid.Row="6" Content="Оплатить" Style="{StaticResource BtnStyle}"/>
+                <Button x:Name="Pay" Grid.Row="6" Content="Оплатить" Command="{Binding SellCommand}" Style="{StaticResource BtnStyle}"/>
             </Grid>
         </Grid>
     </Grid>

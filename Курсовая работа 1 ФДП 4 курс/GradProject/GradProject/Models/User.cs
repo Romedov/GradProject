@@ -11,11 +11,11 @@ using GradProject.Models;
 
 namespace GradProject
 {
-    public interface IUser<T> where T : User
+    public interface IUser<T> where T : User //интерфейс пользователя
     {
         T GetInstance();
     }
-    public partial class User : INotifyPropertyChanged, IUser<User>
+    public partial class User : INotifyPropertyChanged, IUser<User> //класс пользователя
     {
         #region Fields
         string surName;
@@ -26,15 +26,15 @@ namespace GradProject
         #region Properties
         [Key]
         [StringLength(50)]
-        public string UId { get; private set; }
+        public string UId { get; private set; } //id пользователя
 
         [Required]
         [StringLength(50)]
-        public string Password { get; private set; }
+        public string Password { get; private set; } //пароль
 
         [Required]
         [StringLength(50)]
-        public string SurName
+        public string SurName //фамилия
         {
             get { return surName; }
             private set
@@ -46,7 +46,7 @@ namespace GradProject
 
         [Required]
         [StringLength(50)]
-        public string Name
+        public string Name //имя
         {
             get { return name; }
             private set
@@ -57,7 +57,7 @@ namespace GradProject
         }
 
         [StringLength(50)]
-        public string FatherName
+        public string FatherName //отчество
         {
             get { return fatherName; }
             private set
@@ -70,7 +70,7 @@ namespace GradProject
 
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
-        public static event EventHandler<SignInEventArgs> SigningIn;
+        public static event EventHandler<SignInEventArgs> SigningIn; //событие авторизации
         #endregion
 
         #region Methods
@@ -78,7 +78,7 @@ namespace GradProject
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
-        public static User SignIn(string uid, string pwd)
+        public static User SignIn(string uid, string pwd) //авторизация
         {
             using (CashboxDataContext db = new CashboxDataContext())
             {
@@ -112,7 +112,7 @@ namespace GradProject
             }
         }
 
-        public User GetInstance()
+        public User GetInstance() //обращение к объекту через интерфейс
         {
             return this;
         }

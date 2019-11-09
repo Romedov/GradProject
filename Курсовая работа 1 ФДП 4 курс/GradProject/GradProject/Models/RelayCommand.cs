@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace GradProject.Models
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand : ICommand //класс команд MVVM
     {
         #region Fields
         private Action<object> execute;

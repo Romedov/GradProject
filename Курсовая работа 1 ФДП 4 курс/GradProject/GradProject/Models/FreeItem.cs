@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Spatial;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace GradProject
 {
-    public partial class FreeItem : ItemParent, INotifyPropertyChanged
+    public partial class FreeItem : ItemParent, INotifyPropertyChanged //класс товаров, нерегистрируемых в БД
     {
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
@@ -36,17 +38,17 @@ namespace GradProject
         #region Public properties
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long SId { get; set; }
+        public long SId { get; set; } //id смены
 
-        public decimal CashSum { get; set; }
+        public decimal CashSum { get; set; } // сумма продаж данных товаров
         [NotMapped]
-        public override string IId { get; protected set; }
+        public override string IId { get; protected set; } //id товара
         [NotMapped]
-        public override string Name { get; protected set; }
+        public override string Name { get; protected set; } //наименование
         [NotMapped]
-        public override decimal Price { get; protected set; }
+        public override decimal Price { get; protected set; } //цена
         [NotMapped]
-        public override long Number
+        public override long Number //количество
         {
             get { return _number; }
             set { _number = value; OnPropertyChanged(); }
@@ -57,10 +59,45 @@ namespace GradProject
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
-
-        public override void SellItem(Shift currShift)
+        public override async void SellItemAsync(Shift currShift) //асинхронная продажа товара
         {
-
+            using (CashboxDataContext db = new CashboxDataContext())
+            {
+                try
+                {
+                    db.DBConnectionCheck();
+                    db.Shifts.Attach(currShift);
+                    FreeItem fItem = db.FreeItems.First(f => f.SId == currShift.SId);
+                    fItem.CashSum += this.Price * this.Number;
+                    currShift.CashReceived += this.Price * this.Number;
+                    currShift.CurrentCash += this.Price * this.Number;
+                    await db.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+        public override async void ReturnItemAsync(Shift currShift) //асинхронный возврат товара
+        {
+            using (CashboxDataContext db = new CashboxDataContext())
+            {
+                try
+                {
+                    db.DBConnectionCheck();
+                    db.Shifts.Attach(currShift);
+                    FreeItem fItem = db.FreeItems.First(f => f.SId == currShift.SId);
+                    fItem.CashSum -= this.Price * this.Number;
+                    currShift.CashReturned += this.Price * this.Number;
+                    currShift.CurrentCash -= this.Price * this.Number;
+                    await db.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
         #endregion
     }

@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using GradProject.Views;
 using GradProject.Models;
 
@@ -15,7 +8,7 @@ namespace GradProject.ViewModels
     /// <summary>
     /// Логика взаимодействия для ShiftView.xaml
     /// </summary>
-    public class ShiftViewModel : ViewModelBase
+    public class ShiftViewModel : ViewModelBase //VM смены
     {
         #region Constructors
         public ShiftViewModel()
@@ -47,27 +40,27 @@ namespace GradProject.ViewModels
                 }
             }
         }
-        public IUser<User> CurrentUser
+        public IUser<User> CurrentUser //авторизованный пользователь
         {
             get { return _currentUser; }
             private set { _currentUser = value; OnPropertyChanged(); }
         }
-        public decimal MoneyToAddOrWithdraw{ get; set; }
+        public decimal MoneyToAddOrWithdraw { get; set; } = (decimal)0.00; //деньки к внесению/изъятию
         public string EnteredLogin{ get; set; } //введенный при авторизации логин
         public string EnteredPassword { get; set; }//введенный при авторизации пароль
-        public string UserName
+        public string UserName //ФИО пользователя
         {
             get { return _userName; }
             private set { _userName = value; OnPropertyChanged(); }
         }
-        public Shift CurrentShift
+        public Shift CurrentShift //текущая смены
         {
             get { return _currentShift; }
             private set { _currentShift = value; OnPropertyChanged(); }
         }
         #endregion
         #region Commands
-        public RelayCommand AddMoney
+        public RelayCommand AddMoney //внесение средств
         {
             get
             {
@@ -80,11 +73,12 @@ namespace GradProject.ViewModels
                         if(_wnd.ShowDialog() == true)
                         {
                             Shift.AddMoneyAsync(MoneyToAddOrWithdraw, CurrentShift);
+                            MoneyToAddOrWithdraw = (decimal)0.00;
                         }
                     }));
             }
         }
-        public RelayCommand WithdrawMoney
+        public RelayCommand WithdrawMoney //изъятие средств
         {
             get
             {
@@ -97,6 +91,7 @@ namespace GradProject.ViewModels
                         if (_wnd.ShowDialog() == true)
                         {
                             Shift.WithdrawMoneyAsync(MoneyToAddOrWithdraw, CurrentShift);
+                            MoneyToAddOrWithdraw = (decimal)0.00;
                         }
                     }));
             }
@@ -154,22 +149,29 @@ namespace GradProject.ViewModels
                 return _relayCommand ??
                     (_relayCommand = new RelayCommand(obj =>
                     {
-                        if (CurrentShift.EndShift())
-                        {
-                            CurrentShift = new Shift();
-                            CurrentUser = null;
-                            UserName = null;
-                            ButtonIsEnabled = false;
-                        }
+                        OnWindowClosing(this);
                     }));
             }
         }
         #endregion
         #region Methods
-        private void ShiftTransactionCompleted(object sender, ShiftTransactionEventArgs e)
+        private void ShiftTransactionCompleted(object sender, ShiftTransactionEventArgs e) //обработчик события внесния/изъятия средств
         {
             if(!e.IsSuccessful)
                 MessageBox.Show(e.Message);
+        }
+        public void OnWindowClosing(object sender, CancelEventArgs e = null) //обработчик события закрытия окна программы
+        {
+            if (CurrentShift.IsActive)
+            {
+                if (CurrentShift.EndShift())
+                {
+                    CurrentShift = new Shift();
+                    CurrentUser = null;
+                    UserName = null;
+                    ButtonIsEnabled = false;
+                }
+            }
         }
         private void UserSigningIn(object sender, SignInEventArgs e) //обработчик события авторизации пользователя
         {

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GradProject.Models
 {
-    public class ItemSearchEventArgs: EventArgs
+    public class ItemSearchEventArgs: EventArgs 
     {
         #region Fields
         #endregion

@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using GradProject.ViewModels;
 
 namespace GradProject.Views
 {
@@ -25,8 +14,9 @@ namespace GradProject.Views
         {
             InitializeComponent();
             this.DataContext = App.ShiftVM;
+            this.Closing += App.ShiftVM.OnWindowClosing;
         }
-        private void PageSwitch(object sender, EventArgs e)
+        private void PageSwitch(object sender, EventArgs e) //переход по страницам
         {
             Button btn = (Button)sender;
             switch (btn.Name)

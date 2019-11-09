@@ -1,29 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace GradProject.Views
 {
     /// <summary>
     /// Логика взаимодействия для AddShiftWindow.xaml
     /// </summary>
-    public partial class AddShiftWindow : Window
+    public partial class PayBackWindow : Window
     {
-        public AddShiftWindow()
+        public PayBackWindow()
         {
             InitializeComponent();
-            this.DataContext = App.ShiftVM;
+            this.DataContext = App.SellVM;
         }
-        private void MoneyTypeInPreviewTextInput(object sender, TextCompositionEventArgs e) //валидация формы
+        private void MoneyTypeInPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             TextBox tb = sender as TextBox;
             if ((!Char.IsDigit(e.Text, 0)) && (e.Text != "."))
             {
                 e.Handled = true;
             }
-            if (e.Text == "." && tb.Text.Length==0)
+            if (e.Text == "." && tb.Text.Length == 0)
             {
                 e.Handled = true;
             }
@@ -39,7 +47,7 @@ namespace GradProject.Views
                 }
             }
         }
-        private void CloseDialog(object sender, EventArgs e) //закрытие окна
+        private void CloseDialog(object sender, EventArgs e)
         {
             this.DialogResult = true;
         }

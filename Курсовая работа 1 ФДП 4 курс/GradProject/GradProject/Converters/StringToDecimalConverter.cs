@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace GradProject.Converters
 {
-    class StringToDecimalConverter : IValueConverter
+    class StringToDecimalConverter : IValueConverter //биндинг-конвертер
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GradProject.Views
 {
@@ -26,14 +18,22 @@ namespace GradProject.Views
         }
         private void MoneyTypeInPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            TextBox tbne = sender as TextBox;
+            TextBox tb = sender as TextBox;
             if ((!Char.IsDigit(e.Text, 0)) && (e.Text != "."))
             {
                 e.Handled = true;
             }
-            else
+            if (e.Text == "." && tb.Text.Length == 0)
             {
-                if ((e.Text == ".") && ((tbne.Text.IndexOf(".") != -1) || (tbne.Text == "")))
+                e.Handled = true;
+            }
+            if (tb.Text.Count(ch => ch == '.') == 1 && e.Text == ".")
+            {
+                e.Handled = true;
+            }
+            if (tb.Text.IndexOf('.') != -1)
+            {
+                if (tb.Text.Substring(tb.Text.IndexOf('.')).Length == 3 || (tb.Text.Count(ch => ch == '.') == 1 && e.Text == "."))
                 {
                     e.Handled = true;
                 }

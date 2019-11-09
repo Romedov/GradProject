@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GradProject.Views"
         mc:Ignorable="d"
-        Title="Cashbox" Height="700 px" Width="1300 px" MinWidth="1300 px" MinHeight="700 px">
+        Title="Cashbox" Height="700 px" Width="1300 px" MinWidth="1300 px" MinHeight="700 px"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="Button">
             <Style.Setters>
