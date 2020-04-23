@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EntityFrameworkCoreTest.Models.Interfaces
+namespace Kassa.Models.Interfaces
 {
     public interface IUser
     {
-        public int ID { get; }
-        public string Login { get; }
-        public string FirstName { get; }
-        public string SecondName { get; }
-        public string ThirdName { get; }
-        public Roles Role { get; }
-        public DateTime RegDateTime { get; }
+        int ID { get; }
+        string Login { get; }
+        string FirstName { get; }
+        string SecondName { get; }
+        string ThirdName { get; }
+        Roles Role { get; }
+        DateTime RegDateTime { get; }
     }
 }

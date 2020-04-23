@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Kassa.Models.Interfaces
 {
-    public interface IReceiptItem
+    interface IEditableItem
     {
         #region Constructors
         #endregion
@@ -12,11 +13,14 @@ namespace Kassa.Models.Interfaces
         #endregion
         #region Props
         int ID { get; }
+        string Barcode { get; set; }
+        string Name { get; set; }
         float Quantity { get; set; }
-        decimal Price { get; }
-        byte Discount { get; }
+        decimal Price { get; set; }
+        byte Discount { get; set; }
         #endregion
         #region Methods
+        Task ApplyChanges();
         #endregion
     }
 }

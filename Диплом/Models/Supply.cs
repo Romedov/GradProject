@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EntityFrameworkCoreTest.Models
+namespace Kassa.Models
 {
     public class Supply
     {

@@ -1,9 +1,9 @@
-﻿using EntityFrameworkCoreTest.Models.Interfaces;
+﻿using Kassa.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EntityFrameworkCoreTest.Models
+namespace Kassa.Models
 {
     public enum Roles
     {

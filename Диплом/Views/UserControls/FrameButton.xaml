@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Class="Kassa.Views.UserControls.FrameButton"
+       
+    x:Name="FrameLayout">
+    <Frame.GestureRecognizers>
+        <TapGestureRecognizer 
+            x:Name="Tapper" 
+            Tapped="OnButtonTapped"
+            Command="{Binding Command}"
+            CommandParameter="{Binding CommandParameter}"/>
+    </Frame.GestureRecognizers>
+
+    <FlexLayout x:Name="Flex" Direction="{Binding Direction}" BackgroundColor="Transparent">
+        <Image x:Name="ButtonImage" Margin="0,0,10,0" 
+            HorizontalOptions="Start" Aspect="AspectFit"
+            VerticalOptions="CenterAndExpand"
+            Source="{Binding ImageSource}"/>
+        <Label x:Name="ButtonText" 
+            FontSize="{Binding FontSize}" 
+            FontFamily="{Binding FontFamily}"
+            FontAttributes="{Binding FontAttributes}"
+            Text="{Binding Text}"
+            TextColor="{Binding TextColor}"
+            Margin="0,0,0,0" Padding="0,0,0,0" 
+            VerticalTextAlignment="Center" HorizontalTextAlignment="Start"
+            VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
+    </FlexLayout>
+</Frame>
