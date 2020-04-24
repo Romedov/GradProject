@@ -258,12 +258,20 @@ namespace Kassa.Models
         {
             try
             {
-                message = string.Empty;
-                return this.Database.CanConnect();
+                if (this.Database.CanConnect())
+                {
+                    message = "Подключение установлено.";
+                    return true;
+                }
+                else
+                {
+                    message = "Не удалось подключиться к базе данных.";
+                    return false;
+                }
             }
             catch (Exception ex)
             {
-                message = ex.Message;
+                message = $"Не удалось подключиться к базе данных: {ex.Message}";
                 return false;
             }
         }
