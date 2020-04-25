@@ -128,47 +128,15 @@ namespace Kassa.Models
                 }
             }
         }
-        public void Sell(IPostable receipt, decimal money)
+        public void ChangeSalesStats(decimal money)
         {
-            if (receipt != null && money > 0 && receipt.ReceiptType == ReceiptType.Sale)
-            {
-                decimal result = receipt.Post(new PostSaleReceipt(receipt), this, money);
-                if (result > Convert.ToDecimal(0))
-                {
-                    this.Balance += result;
-                    this.SalesSum += result;
-                    //TODO: create and invoke a proper event
-                }
-                else
-                {
-                    //TODO: create and invoke a proper event
-                }
-            }
-            else
-            {
-                //TODO: create and invoke a proper event
-            }
+            this.Balance += money;
+            this.SalesSum += money;
         }
-        public void Return(IPostable receipt)
+        public void ChangeReturnsStats(decimal money)
         {
-            if (receipt != null && receipt.ReceiptType == ReceiptType.Return)
-            {
-                decimal result = receipt.Post(new PostReturnReceipt(receipt), this);
-                if (result > Convert.ToDecimal(0))
-                {
-                    this.Balance -= result;
-                    this.ReturnsSum += result;
-                    //TODO: create and invoke a proper event
-                }
-                else
-                {
-                    //TODO: create and invoke a proper event
-                }
-            }
-            else
-            {
-                //TODO: create and invoke a proper event
-            }
+            this.Balance -= money;
+            this.ReturnsSum += money;
         }
         public async Task AddMoney(decimal amount)
         {

@@ -1,12 +1,9 @@
 ﻿using Kassa.Models.Interfaces;
 using Kassa.Models.EventsArgs;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kassa.Models
 {
@@ -76,6 +73,19 @@ namespace Kassa.Models
         {
             this.TotalPrice = this.Items.Sum(i => i.GetTotalPrice());
         }
+        private void InitializePoster(IPoster poster, IShift shift, decimal money = 0)
+        {
+            if (poster.TryPost(this, shift, out string message, money))
+            {
+                this.ReceiptPosted?.Invoke(this,
+                            new ReceiptPostedEventArgs($"Готово: {message}."));
+            }
+            else
+            {
+                this.ReceiptPosted?.Invoke(this,
+                            new ReceiptPostedEventArgs($"Ошибка: {message}.", false));
+            }
+        }
         #endregion
         #region Public methods
         public void AddItem(ISellableItem item) //добавление товара в чек
@@ -101,142 +111,26 @@ namespace Kassa.Models
             this.Shift = shift as Shift;
             this.PostDateTime = DateTime.Now;
         }
-        public bool CanPost(IShift shift, decimal money, out string message) //возможно ли проведение чека продажи
+        public void Post(IShift shift, decimal money = 0)
         {
-            if ((money >= this.TotalPrice) && (this.Items.Count > 0) && ((money - this.TotalPrice) <= shift.Balance))
+            switch (this.ReceiptType)
             {
-                message = $"Сдача: {money - this.TotalPrice} руб.";
-                return true;
-            }
-            else if (money < this.TotalPrice)
-            {
-                message = $"к оплате предоставлено недостаточно средств ({this.TotalPrice - money})";
-                return false;
-            }
-            else if (this.Items.Count < 1)
-            {
-                message = $"список товаров пуст";
-                return false;
-            }
-            else
-            {
-                message = $"недостаточно средств для выдачи сдачи " +
-                    $"({(money - this.TotalPrice) - shift.Balance}).\n " +
-                    $"В кассе: {shift.Balance} руб)";
-                return false;
+                case ReceiptType.Sale:
+                    this.InitializePoster(new SalePoster(), shift, money);
+                    break;
+                case ReceiptType.Return:
+                    this.InitializePoster(new ReturnPoster(), shift);
+                    break;
+                default:
+                    this.ReceiptPosted?.Invoke(this,
+                            new ReceiptPostedEventArgs($"Ошибка: не задан тип операции (продажа/возврат).", false));
+                    break;
             }
         }
-        public bool CanPost(IShift shift, out string message) //возможно ли проведение чека возврата
+        public int GetItemsCount()
         {
-            if ((this.Items.Count > 0) && (this.TotalPrice <= shift.Balance))
-            {
-                message = $"К возврату: {this.TotalPrice} руб.";
-                return true;
-            }
-            else if (this.Items.Count < 1)
-            {
-                message = $"список товаров пуст";
-                return false;
-            }
-            else
-            {
-                message = $"недостаточно средств в кассе для выдачи сдачи " +
-                    $"({this.TotalPrice - shift.Balance}).\n " +
-                    $"В кассе: {shift.Balance} руб)";
-                return false;
-            }
+            return this.Items.Count;
         }
-        public decimal Post(IPost poster, IShift shift, decimal money = 0)
-        {
-            var result = poster.TryPost(shift, out string message, money);
-            if (result)
-            {
-                this.ReceiptPosted?.Invoke(this, new ReceiptPostedEventArgs($"Чек проведён. {message}"));
-                return this.TotalPrice;
-            }
-            else
-            {
-                this.ReceiptPosted?.Invoke(this,
-                    new ReceiptPostedEventArgs($"Чек не проведён: {message}.", false));
-                return 0;
-            }
-        }
-
-        //public decimal PostSale(IShift shift, decimal money) //проведение чека
-        //{
-        //    if (this.CanPostSale(shift, money, out string message))
-        //    {
-        //        using (CashRegisterContext ctx = new CashRegisterContext())
-        //        {
-        //            if (ctx.CheckConnection(out string dbMessage))
-        //            {
-        //                this.AssignPostData(shift);
-        //                ctx.Receipts.Add(this);
-        //                ctx.SaveChanges();
-        //                this.ReceiptPosted?.Invoke(this, new ReceiptPostedEventArgs($"Чек проведён. {message}"));
-        //                return this.TotalPrice;
-        //            }
-        //            else
-        //            {
-        //                this.ReceiptPosted?.Invoke(this,
-        //                        new ReceiptPostedEventArgs($"Чек не проведён. {dbMessage}.", false));
-        //                return 0;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        this.ReceiptPosted?.Invoke(this,
-        //            new ReceiptPostedEventArgs($"Чек не проведён: {message}.", false));
-        //        return 0;
-        //    }
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-        //public decimal PostReturn(IShift shift) //проведение чека
-        //{
-        //    if (this.ReceiptType != ReceiptType.Return)
-        //    {
-        //        return;
-        //    }
-
-        //    if (this.CanPostReturn(shift, out string message))
-        //    {
-        //        using (CashRegisterContext ctx = new CashRegisterContext())
-        //        {
-        //            if (ctx.CheckConnection(out string dbMessage))
-        //            {
-        //                this.AssignPostData(shift);
-        //                ctx.Receipts.Add(this);
-        //                ctx.SaveChanges();
-        //                this.ReceiptPosted?.Invoke(this, new ReceiptPostedEventArgs($"Чек проведён. {message}"));
-        //                return this.TotalPrice;
-        //            }
-        //            else
-        //            {
-        //                this.ReceiptPosted?.Invoke(this,
-        //                        new ReceiptPostedEventArgs($"Чек не проведён. {dbMessage}.", false));
-        //                return 0;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        this.ReceiptPosted?.Invoke(this,
-        //            new ReceiptPostedEventArgs($"Чек не проведён: {message}.", false));
-        //        return 0;
-        //    }
-        //}
         #endregion
     }
 }

@@ -27,8 +27,8 @@ namespace Kassa.Models.Interfaces
         bool TryRestoreLastUnfinished(out IShift shift);
         void Start(IUser user);
         void Finish();
-        void Sell(IPostable receipt, decimal money);
-        void Return(IPostable receipt);
+        void ChangeSalesStats(decimal money);
+        void ChangeReturnsStats(decimal money);
         Task AddMoney(decimal amount);
         Task WithdrawMoney(decimal amount);
         #endregion

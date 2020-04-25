@@ -15,9 +15,9 @@ namespace Kassa.Models.Interfaces
         ReceiptType ReceiptType { get; }
         #endregion
         #region Methods
-        decimal Post(IPost poster, IShift shift, decimal money = 0);
-        bool CanPost(IShift shift, out string message);
-        bool CanPost(IShift shift, decimal money, out string message);
+        void Post(IShift shift, decimal money = 0);
+        int GetItemsCount();
+        void AssignShiftAndDate(IShift shift);
         #endregion
     }
 }
