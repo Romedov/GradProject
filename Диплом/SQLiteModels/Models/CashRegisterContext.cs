@@ -11,6 +11,9 @@ namespace Kassa.Models
 {
     public class CashRegisterContext : DbContext
     {
+        //TODO: создать функционал списания товаров
+        //TODO: добавить/изменить проверку подключения на "CanConnect"
+        //TODO: создать дополнительные события 
         #region Public constructors
         public CashRegisterContext()
         {
@@ -27,7 +30,7 @@ namespace Kassa.Models
         public virtual DbSet<Shift> Shifts { get; private set; }
         public virtual DbSet<User> Users { get; private set; }
         public virtual DbSet<Receipt> Receipts { get; private set; }
-        //public virtual DbSet<Supply> Supplies { get; set; }
+        public virtual DbSet<Supply> Supplies { get; private set; }
         #endregion
         #region Protected methods
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -41,45 +44,24 @@ namespace Kassa.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.Entity<Supply>(entity =>
-            //{
-            //    entity.Property(e => e.ID)
-            //        .ValueGeneratedOnAdd();
-            //    entity.HasKey(e => e.ID);
+            modelBuilder.Entity<Supply>(entity =>
+            {
+                    entity.HasKey(e => new {e.ShiftID, e.ItemID});
+                    entity.Property(e => e.Basis).IsRequired();
+                    entity.Property(e => e.Price).HasConversion<double>().IsRequired();
+                    entity.Property(e => e.Quantity).IsRequired();
 
-            //    entity.Property(e => e.Quantity)
-            //            .IsRequired();
-
-            //    entity.Property(e => e.ItemID)
-            //            .IsRequired();
-
-            //    entity.Property(e => e.SupplierName)
-            //            .IsRequired();
-
-            //    entity.Property(e => e.TotalPrice)
-            //            .HasConversion<double>()
-            //            .IsRequired();
-
-            //    entity.Property(e => e.SupplyDateTime)
-            //            .IsRequired();
-
-            //    entity.Property(e => e.ShiftID)
-            //            .IsRequired();
-
-            //    entity.HasOne(e => e.Item)
-            //            .WithMany(t => t.Supplies)
-            //            .HasForeignKey(k => k.ItemID)
-            //            .OnDelete(DeleteBehavior.Cascade)
-            //            .HasConstraintName("FK_Supply_to_Item_by_ID")
-            //            .IsRequired();
-
-            //    entity.HasOne(e => e.Shift)
-            //            .WithMany(t => t.Supplies)
-            //            .HasForeignKey(k => k.ShiftID)
-            //            .OnDelete(DeleteBehavior.Cascade)
-            //            .HasConstraintName("FK_Supply_to_Shift_by_ID")
-            //            .IsRequired();
-            //});
+                    entity.HasOne(s => s.Shift)
+                            .WithMany(sh => sh.Supplies)
+                            .HasForeignKey(s => s.ShiftID)
+                            .OnDelete(DeleteBehavior.Cascade)
+                            .IsRequired();
+                    entity.HasOne(s => s.Item)
+                            .WithMany(i => i.Supplies)
+                            .HasForeignKey(s => s.ItemID)
+                            .OnDelete(DeleteBehavior.Cascade)
+                            .IsRequired();
+            });
 
             modelBuilder.Entity<Item>(entity =>
             {

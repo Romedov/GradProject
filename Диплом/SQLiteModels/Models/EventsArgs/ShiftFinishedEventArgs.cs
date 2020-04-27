@@ -4,18 +4,11 @@ using System.Text;
 
 namespace Kassa.Models.EventsArgs
 {
-    public class ShiftFinishedEventArgs
+    public class ShiftFinishedEventArgs : EventArgsBase
     {
-        #region Constructros
-        public ShiftFinishedEventArgs(string message, bool isFinished = true)
+        public ShiftFinishedEventArgs(string message, bool successful = true) : base(message, successful)
         {
-            this.Message = message;
-            this.IsFinished = isFinished;
+            
         }
-        #endregion
-        #region Public props
-        public bool IsFinished { get; private set; }
-        public string Message { get; private set; }
-        #endregion
     }
 }

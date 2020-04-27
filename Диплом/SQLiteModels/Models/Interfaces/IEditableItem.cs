@@ -20,7 +20,9 @@ namespace Kassa.Models.Interfaces
         byte Discount { get; set; }
         #endregion
         #region Methods
-        Task ApplyChanges();
+        void ApplyChanges();
+        void Register();
+
         #endregion
     }
 }

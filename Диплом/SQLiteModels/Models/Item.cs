@@ -29,18 +29,28 @@ namespace Kassa.Models
         public float Quantity { get; set; }
         public decimal Price { get; set; }
         public byte Discount { get; set; }
-        public IEnumerable<ReceiptItem> ReceiptItems { get; private set; } //nav
+
+        #region Navigation props
+        public IEnumerable<ReceiptItem> ReceiptItems { get; private set; }
+        public IEnumerable<Supply> Supplies { get; private set; }
+        #endregion
+        
         #endregion
         #region Private methods
         #endregion
         #region Public methods
-        public async Task ApplyChanges()
+        public void ApplyChanges()
         {
             using (CashRegisterContext ctx = new CashRegisterContext())
             {
                 ctx.Items.Update(this);
-                await ctx.SaveChangesAsync();
+                ctx.SaveChanges();
             }
+        }
+
+        public void Register()
+        {
+            throw new NotImplementedException();
         }
         public static Item GetItemByBarCode(string barcode)
         {

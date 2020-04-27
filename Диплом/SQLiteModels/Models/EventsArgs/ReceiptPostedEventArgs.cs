@@ -4,18 +4,11 @@ using System.Text;
 
 namespace Kassa.Models.EventsArgs
 {
-    public class ReceiptPostedEventArgs : EventArgs
+    public class ReceiptPostedEventArgs : EventArgsBase
     {
-        #region Constructros
-        public ReceiptPostedEventArgs(string message, bool isPosted = true)
+        public ReceiptPostedEventArgs(string message, bool successful = true) : base(message, successful)
         {
-            this.Message = message;
-            this.IsPosted = isPosted;
+            
         }
-        #endregion
-        #region Public props
-        public bool IsPosted { get; private set; }
-        public string Message { get; private set; }
-        #endregion
     }
 }

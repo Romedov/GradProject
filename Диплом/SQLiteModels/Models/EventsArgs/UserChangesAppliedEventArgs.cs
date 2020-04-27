@@ -4,14 +4,11 @@ using System.Text;
 
 namespace Kassa.Models.EventsArgs
 {
-    public class UserChangesAppliedEventArgs : EventArgs
+    public class UserChangesAppliedEventArgs : EventArgsBase
     {
-        public UserChangesAppliedEventArgs(string message, bool successful = true)
+        public UserChangesAppliedEventArgs(string message, bool successful = true) : base(message, successful)
         {
-            this.Message = message;
-            this.Successful = successful;
+            
         }
-        public string Message { get; private set; }
-        public bool Successful { get; private set; }
     }
 }

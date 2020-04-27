@@ -19,7 +19,7 @@ namespace Kassa.Models
         #region Events
         public event EventHandler<ShiftStartedEventArgs> ShiftStarted;
         public event EventHandler<ShiftFinishedEventArgs> ShiftFinished;
-        public event EventHandler<MoneyWithrawnEventArgs> MoneyWithrawn;
+        public event EventHandler<MoneyWithdrawnEventArgs> MoneyWithdrawn;
         #endregion
         #region Private props
         private bool _isRunning = false;
@@ -35,8 +35,13 @@ namespace Kassa.Models
         public decimal SalesSum { get; private set; }
         public decimal ReturnsSum { get; private set; }
         public bool IsFinished { get; private set; }
-        public User User { get; private set; }                      //nav 
-        public IEnumerable<Receipt> Receipts { get; private set; }  //nav
+
+        #region Navigation props
+        public User User { get; private set; }                      
+        public IEnumerable<Receipt> Receipts { get; private set; }  
+        public IEnumerable<Supply> Supplies { get; private set; }
+        #endregion
+        
         #endregion
         #region Private methods
         
@@ -166,8 +171,8 @@ namespace Kassa.Models
             }
             if (amount > this.Balance)
             {
-                MoneyWithrawn.Invoke(this,
-                    new MoneyWithrawnEventArgs("Невозможно изъять больше, чем есть! " +
+                MoneyWithdrawn.Invoke(this,
+                    new MoneyWithdrawnEventArgs("Невозможно изъять больше, чем есть! " +
                     $"Не хватает {amount - this.Balance} руб.", false));
                 return;
             }
@@ -177,8 +182,8 @@ namespace Kassa.Models
                 this.Balance -= amount;
                 ctx.Shifts.Update(this);
                 await ctx.SaveChangesAsync();
-                MoneyWithrawn.Invoke(this,
-                    new MoneyWithrawnEventArgs($"Изъято {amount - this.Balance} руб."));
+                MoneyWithdrawn.Invoke(this,
+                    new MoneyWithdrawnEventArgs($"Изъято {amount - this.Balance} руб."));
             }
         }
         #endregion
