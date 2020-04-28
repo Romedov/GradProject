@@ -20,6 +20,7 @@ namespace Kassa.Models
         public event EventHandler<ShiftStartedEventArgs> ShiftStarted;
         public event EventHandler<ShiftFinishedEventArgs> ShiftFinished;
         public event EventHandler<MoneyWithdrawnEventArgs> MoneyWithdrawn;
+        public event EventHandler<MoneyAddedEventArgs> MoneyAdded; 
         #endregion
         #region Private props
         private bool _isRunning = false;
@@ -40,6 +41,7 @@ namespace Kassa.Models
         public User User { get; private set; }                      
         public IEnumerable<Receipt> Receipts { get; private set; }  
         public IEnumerable<Supply> Supplies { get; private set; }
+        public IEnumerable<Disposal> Disposals { get; private set; }
         #endregion
         
         #endregion
@@ -156,10 +158,18 @@ namespace Kassa.Models
             {
                 using (CashRegisterContext ctx = new CashRegisterContext())
                 {
+                    if (!ctx.CanConnect)
+                    {
+                        MoneyAdded?.Invoke(this,
+                            new MoneyAddedEventArgs("Нет соединения с базой данных!", false));
+                        return;
+                    }
                     this.AddsSum += amount;
                     this.Balance += amount;
                     ctx.Shifts.Update(this);
                     await ctx.SaveChangesAsync();
+                    MoneyAdded?.Invoke(this,
+                        new MoneyAddedEventArgs($"Зачислено {AddsSum} руб.!"));
                 }
             }
         }
@@ -169,20 +179,29 @@ namespace Kassa.Models
             {
                 return;
             }
+            
             if (amount > this.Balance)
             {
-                MoneyWithdrawn.Invoke(this,
+                MoneyWithdrawn?.Invoke(this,
                     new MoneyWithdrawnEventArgs("Невозможно изъять больше, чем есть! " +
                     $"Не хватает {amount - this.Balance} руб.", false));
                 return;
             }
+            
             using (CashRegisterContext ctx = new CashRegisterContext())
             {
+                if (!ctx.CanConnect)
+                {
+                    MoneyWithdrawn?.Invoke(this,
+                        new MoneyWithdrawnEventArgs("Нет соединения с базой данных!"));
+                    return;
+                }
+                
                 this.WithdrawalsSum += amount;
                 this.Balance -= amount;
                 ctx.Shifts.Update(this);
                 await ctx.SaveChangesAsync();
-                MoneyWithdrawn.Invoke(this,
+                MoneyWithdrawn?.Invoke(this,
                     new MoneyWithdrawnEventArgs($"Изъято {amount - this.Balance} руб."));
             }
         }

@@ -46,6 +46,11 @@ namespace Kassa.Models
         {
             using (CashRegisterContext ctx = new CashRegisterContext())
             {
+                if (!ctx.CanConnect)
+                {
+                    difference = 0;
+                    return false;
+                }
                 ISellableItem item = ctx.Items.FirstOrDefault(i => i.ID == this.ItemID);
                 if (item!=null)
                 {

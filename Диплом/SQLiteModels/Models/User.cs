@@ -83,6 +83,10 @@ namespace Kassa.Models
         {
             using (CashRegisterContext ctx = new CashRegisterContext())
             {
+                if (!ctx.CanConnect)
+                {
+                    ChangesApplied?.Invoke(this, new UserChangesAppliedEventArgs("Нет соединения с базой данных!", false));
+                }
                 var existingUser = ctx.Users.FirstOrDefault(u => u.Login == this.Login);
                 if (existingUser != null && !IsEmpty())
                 {
@@ -102,6 +106,12 @@ namespace Kassa.Models
         {
             using (CashRegisterContext ctx = new CashRegisterContext())
             {
+                if (!ctx.CanConnect)
+                {
+                    Registered?.Invoke(this, new UserRegisteredEventArgs("Нет соединения с базой данных!", false));
+                    return;
+                }
+                
                 var existingUser = ctx.Users.FirstOrDefault(u => u.Login == this.Login);
                 if (existingUser == null && !IsEmpty())
                 {

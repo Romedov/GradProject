@@ -45,6 +45,8 @@ namespace Kassa.Models
                 if (ctx.CanConnect)
                 {
                     this.SupplyDT = DateTime.Now;
+                    Item.Quantity += this.Quantity;
+                    ctx.Items.Update(Item);
                     ctx.Supplies.Add(this);
                     ctx.SaveChanges();
                     Registered?.Invoke(this, new SupplyRegisteredEventArgs("Приемка произведена!"));

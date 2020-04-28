@@ -15,7 +15,7 @@ namespace Kassa.Models
                 {
                     using (CashRegisterContext ctx = new CashRegisterContext())
                     {
-                        if (ctx.CheckConnection(out string dbMessage))
+                        if (ctx.CanConnect)
                         {
                             receipt.AssignShiftAndDate(shift);
                             shift.ChangeReturnsStats(receipt.TotalPrice);
@@ -27,7 +27,7 @@ namespace Kassa.Models
                         }
                         else
                         {
-                            message = dbMessage;
+                            message = "нет соединения с базой данных";
                             return false;
                         }
                     }

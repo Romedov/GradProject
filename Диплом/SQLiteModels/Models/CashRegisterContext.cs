@@ -12,8 +12,6 @@ namespace Kassa.Models
     public class CashRegisterContext : DbContext
     {
         //TODO: создать функционал списания товаров
-        //TODO: добавить/изменить проверку подключения на "CanConnect"
-        //TODO: создать дополнительные события 
         #region Public constructors
         public CashRegisterContext()
         {
@@ -31,6 +29,7 @@ namespace Kassa.Models
         public virtual DbSet<User> Users { get; private set; }
         public virtual DbSet<Receipt> Receipts { get; private set; }
         public virtual DbSet<Supply> Supplies { get; private set; }
+        public virtual DbSet<Disposal> Disposals { get; private set; }        
         #endregion
         #region Protected methods
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -58,6 +57,24 @@ namespace Kassa.Models
                             .IsRequired();
                     entity.HasOne(s => s.Item)
                             .WithMany(i => i.Supplies)
+                            .HasForeignKey(s => s.ItemID)
+                            .OnDelete(DeleteBehavior.Cascade)
+                            .IsRequired();
+            });
+            
+            modelBuilder.Entity<Disposal>(entity =>
+            {
+                    entity.HasKey(e => new {e.ShiftID, e.ItemID});
+                    entity.Property(e => e.Basis).IsRequired();
+                    entity.Property(e => e.Quantity).IsRequired();
+
+                    entity.HasOne(s => s.Shift)
+                            .WithMany(sh => sh.Disposals)
+                            .HasForeignKey(s => s.ShiftID)
+                            .OnDelete(DeleteBehavior.Cascade)
+                            .IsRequired();
+                    entity.HasOne(s => s.Item)
+                            .WithMany(i => i.Disposals)
                             .HasForeignKey(s => s.ItemID)
                             .OnDelete(DeleteBehavior.Cascade)
                             .IsRequired();

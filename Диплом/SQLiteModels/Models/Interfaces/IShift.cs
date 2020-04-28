@@ -11,6 +11,8 @@ namespace Kassa.Models.Interfaces
         #region Events
         event EventHandler<ShiftStartedEventArgs> ShiftStarted;
         event EventHandler<ShiftFinishedEventArgs> ShiftFinished;
+        event EventHandler<MoneyWithdrawnEventArgs> MoneyWithdrawn;
+        event EventHandler<MoneyAddedEventArgs> MoneyAdded;
         #endregion
         #region Public props
         long ID { get; }

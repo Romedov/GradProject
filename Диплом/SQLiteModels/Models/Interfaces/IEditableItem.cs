@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using Kassa.Models.EventsArgs;
 
 namespace Kassa.Models.Interfaces
 {
@@ -10,6 +8,8 @@ namespace Kassa.Models.Interfaces
         #region Constructors
         #endregion
         #region Events
+        event EventHandler<ItemChangesAppliedEventArgs> ChangesApplied;
+        event EventHandler<ItemRegisteredEventArgs> Registered;
         #endregion
         #region Props
         long ID { get; }
