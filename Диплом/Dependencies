@@ -1,6 +1,0 @@
-Original:
-  Xamarin.Essentials;
-  Xamarin.Forms;
-  NetStandart.Library;
-Additional:
-  Microsoft.EntityFrameworkCore.SqlServer;
