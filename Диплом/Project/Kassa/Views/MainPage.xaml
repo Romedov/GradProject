@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            mc:Ignorable="d"
+            xmlns:userControls="clr-namespace:Kassa.Views.UserControls"
+            x:Class="Kassa.Views.MainPage">
+
+    <MasterDetailPage.Master>
+        <!--<views:MenuPage/>-->
+        <ContentPage Title="Master" BackgroundColor="YellowGreen">
+            <StackLayout Orientation="Vertical" Spacing="1">
+                <userControls:FrameButton ClassId="SaleBtn" ImageSource="shopping_cart_96px.png" Text="Продажа" 
+                                          Style="{StaticResource MenuButton}" Tapped="Button_Clicked" 
+                                          IsEnabled="{Binding IsShiftRunning}"/>
+                <userControls:FrameButton ClassId="ReturnBtn" ImageSource="return_purchase_96px.png" Text="Возврат" 
+                                          Style="{StaticResource MenuButton}" Tapped="Button_Clicked" 
+                                          IsEnabled="{Binding IsShiftRunning}"/>
+                <userControls:FrameButton ClassId="ShiftBtn" ImageSource="balance_96px.png" Text="Смена" 
+                                          Style="{StaticResource MenuButton}" Tapped="Button_Clicked"/>
+                <userControls:FrameButton x:Name="UserButton" ClassId="UserBtn"  ImageSource="users104px.png" Text="Пользователи" 
+                                          Style="{StaticResource MenuButton}" Tapped="Button_Clicked" 
+                                          IsEnabled="{Binding IsShiftRunning}"/>
+                <userControls:FrameButton ClassId="ItemBtn" ImageSource="new_product_64px.png" Text="Товар" 
+                                          Style="{StaticResource MenuButton}" Tapped="Button_Clicked" 
+                                          IsEnabled="{Binding IsShiftRunning}"/>
+                <userControls:FrameButton ClassId="ExitBtn" ImageSource="exit_64px.png" Text="Выход" BackgroundColor="Red" 
+                                          Style="{StaticResource MenuButton}" Command="{Binding ExitCommand}">
+                    <userControls:FrameButton.Triggers>
+                        <Trigger TargetType="userControls:FrameButton" Property="IsEnabled" Value="True">
+                            <Setter Property="BackgroundColor" Value="Red"/>
+                        </Trigger>
+                        <Trigger TargetType="userControls:FrameButton" Property="IsEnabled" Value="False">
+                            <Setter Property="BackgroundColor" Value="LightGray"/>
+                        </Trigger>
+                    </userControls:FrameButton.Triggers>
+                </userControls:FrameButton>
+            </StackLayout>
+        </ContentPage>
+    </MasterDetailPage.Master>
+    
+</MasterDetailPage>

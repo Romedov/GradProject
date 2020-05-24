@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Kassa.Views.ItemMenuPage">
+    <ContentPage.Content>
+        <FlexLayout VerticalOptions="Center" HorizontalOptions="CenterAndExpand" Direction="Column" JustifyContent="Center">
+            <Button x:Name="RegisterButton" Text="Регистрация товара" Style="{StaticResource BigGreenBtn}" Clicked="ItemRegisterButton_Clicked"/>
+            <Button x:Name="EditButton" Text="Изменение данных товара" Style="{StaticResource BigGreenBtn}" Clicked="ItemEditButton_Clicked"/>
+            <Button Text="Приёмка товара" Style="{StaticResource BigGreenBtn}" Clicked="ItemSupplyButton_Clicked"/>
+            <Button Text="Списание товара" Style="{StaticResource BigGreenBtn}" Clicked="ItemDisposalButton_Clicked"/>
+        </FlexLayout>
+    </ContentPage.Content>
+</ContentPage>

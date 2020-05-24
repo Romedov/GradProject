@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Kassa.Views.ReceiptView">
+    <ContentPage.Content>
+        <Grid RowSpacing="3" ColumnSpacing="3">
+            <!--#region Definitions-->
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--#endregion-->
+
+            <!--#region Search-->
+
+            <StackLayout Orientation="Vertical" Grid.Row="0" Grid.ColumnSpan="4" Margin="10,0">
+                <Label Text="{Binding RegisteredReceipt.ID, StringFormat='Номер чека: {0}', FallbackValue='Номер чека:'}" 
+                       Style="{StaticResource LabelHeader}" LineBreakMode="CharacterWrap" Margin="0,10"/>
+                <Label Text="{Binding RegisteredReceipt.PostDateTime, StringFormat='Дата проведения: {0:dd.MM.yyyy}', FallbackValue='Дата проведения:'}" 
+                       Style="{StaticResource LabelHeader}" Margin="0,0,0,10"/>
+                <Label Text="{Binding RegisteredReceipt.PostDateTime, StringFormat='Время проведения: {0:HH:mm:ss}', FallbackValue='Время проведения:'}"
+                       Style="{StaticResource LabelHeader}" Margin="0,0,0,10"/>
+                <Label Text="{Binding RegisteredReceipt.TotalPrice, StringFormat='Итог: {0:0.00}', FallbackValue='Итог:'}" 
+                       Style="{StaticResource LabelHeader}" Margin="0,0,0,10"/>
+            </StackLayout>
+
+            <!--#endregion-->
+
+            <!--#region Items-->
+            <Frame CornerRadius="0" BorderColor="ForestGreen" Padding="0,0,0,10" Margin="10,0,10,00" Grid.Row="1" Grid.ColumnSpan="4">
+                <ScrollView>
+                    <ListView ItemsSource="{Binding RegisteredReceipt.Items}" SelectedItem="{Binding SelectedItem}"
+                              HasUnevenRows="True" SeparatorVisibility="Default" SeparatorColor="Black">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Spacing="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="3">
+                                        <Label FontSize="Medium" LineBreakMode="WordWrap" Text="{Binding ItemName}"/>
+                                        <Label FontSize="Small" Text="{Binding Price, StringFormat='Цена: {0:0.00}'}"/>
+                                        <Label FontSize="Small" Text="{Binding Discount, StringFormat='Скидка: {0}%'}"/>
+                                        <Label FontSize="Small" Text="{Binding Quantity, StringFormat='Количество: {0}'}"/>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollView>
+            </Frame>
+
+
+            <!--#endregion-->
+
+            <!--#region Payment and List Controls-->
+
+            <Button Text="Выбрать" Command="{Binding AddCommand}"
+                         Style="{StaticResource BigGreenBtn}" 
+                         Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"/>
+
+            <!--#endregion-->
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

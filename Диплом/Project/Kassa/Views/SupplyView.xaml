@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Kassa.Views.SupplyView">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="3" BackgroundColor="Bisque" Padding="10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Entry x:Name="BarcodeEntry" Text="{Binding SearchBarcode}"  Placeholder="Код товара" TextColor="Black" 
+                   Grid.Row="0" Grid.Column="0" Margin="0" BackgroundColor="BurlyWood"/>
+            <ImageButton Source="search_90px.png" 
+                             Style="{StaticResource ImgBtnStyle}" 
+                             Padding="5" Grid.Column="1" Grid.Row="0" 
+                             Command="{Binding SearchCommand}"/>
+            <ImageButton Source="barcode_scanner_104px.png" 
+                             Style="{StaticResource ImgBtnStyle}" 
+                             Padding="10" Grid.Column="2" Grid.Row="0" 
+                             Command="{Binding SearchViaScanCommand}"/>
+
+            <FlexLayout Direction="Column" JustifyContent="Center" 
+                        Padding="0,0" BackgroundColor="Bisque" 
+                        Grid.Row="1" Grid.ColumnSpan="3">
+
+                <Label Text="{Binding Item.Barcode, Mode=OneWay, StringFormat='Код: {0}', FallbackValue='Код:'}" 
+                       Style="{StaticResource LabelHeader}" Margin="0,0,0,10"/>
+                <Label Text="{Binding Item.Name, Mode=OneWay, StringFormat='Наименование: {0}', FallbackValue='Наименование:'}"
+                       Style="{StaticResource LabelHeader}" LineBreakMode="WordWrap" Margin="0,0,0,10"/>
+                <Label Text="{Binding Item.Quantity, Mode=OneWay, StringFormat='Остаток: {0}', FallbackValue='Остаток:'}"
+                       Style="{StaticResource LabelHeader}" LineBreakMode="WordWrap" Margin="0,0,0,10"/>
+                <Label Text="Основание:" Style="{StaticResource LabelHeader}"/>
+                <Editor Text="{Binding Basis, Mode=TwoWay}" Margin="0,0,0,10" 
+                        FlexLayout.Grow="1" BackgroundColor="White" Unfocused="BasisEditor_Unfocused"/>
+                <Label Text="Количество:" Style="{StaticResource LabelHeader}"/>
+                <Entry Text="{Binding Quantity, Mode=TwoWay}" Margin="0,0,0,10" Keyboard="Telephone" Unfocused="NumberEntry_Unfocused"/>
+                <Label Text="Цена закупки:" Style="{StaticResource LabelHeader}"/>
+                <Entry Text="{Binding Price, Mode=TwoWay}" Margin="0,0,0,10" Keyboard="Telephone" Unfocused="NumberEntry_Unfocused"/>
+                <Label Text="{Binding TotalPrice, Mode=OneWay, StringFormat='Итог: {0}'}" 
+                       Style="{StaticResource LabelHeader}" Margin="0,0,0,10"/>
+                <Button Text="Произвести приёмку" Style="{StaticResource BigGreenBtn}" 
+                        FontSize="Medium" HorizontalOptions="FillAndExpand" Command="{Binding RegisterCommand}"/>
+
+            </FlexLayout>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Kassa.Views.UserRegistrationView">
+    <ContentPage.Content>
+        <FlexLayout Direction="Column" JustifyContent="Center" Padding="10,25" BackgroundColor="Bisque">
+            <Label Text="Логин:" Style="{StaticResource LabelHeader}"/>
+            <Entry Margin="0,0,0,10" Text="{Binding Login}"/>
+            <Label Text="Пароль:" Style="{StaticResource LabelHeader}"/>
+            <Entry IsPassword="True" Margin="0,0,0,10" Text="{Binding Password}"/>
+            <Label Text="Фамилия:" Style="{StaticResource LabelHeader}"/>
+            <Entry Margin="0,0,0,10" Text="{Binding SecondName}"/>
+            <Label Text="Имя:" Style="{StaticResource LabelHeader}"/>
+            <Entry Margin="0,0,0,10" Text="{Binding FirstName}"/>
+            <Label Text="Отчество:" Style="{StaticResource LabelHeader}"/>
+            <Entry Text="{Binding ThirdName}"/>
+            <StackLayout Orientation="Horizontal" Padding="25,0" Margin="0,20">
+                <Label Text="Права администратора" FontSize="Medium"  Style="{StaticResource LabelHeader}"
+                       VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <Switch HorizontalOptions="End" VerticalOptions="FillAndExpand" IsToggled="{Binding IsAdmin}"/>
+            </StackLayout>
+            <Button Text="Создать пользователя" Style="{StaticResource BigGreenBtn}" Command="{Binding RegisterCommand}"/>
+        </FlexLayout>
+    </ContentPage.Content>
+</ContentPage>

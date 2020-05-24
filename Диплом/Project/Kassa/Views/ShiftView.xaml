@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d"
+             x:Class="Kassa.Views.ShiftView">
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1.5*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Text="{Binding Shift.Balance, Mode=OneWay, StringFormat='{0:0.00}'}" Grid.Row="0" Grid.ColumnSpan="2" TextColor="White"
+                   VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
+                   FontAttributes="Bold" FontSize="60" VerticalOptions="FillAndExpand"
+                   HorizontalOptions="FillAndExpand" BackgroundColor="Red"/>
+
+            <Label Text="Внесено:" Grid.Row="1" Grid.Column="0" Style="{StaticResource ShiftStatsHeader}"/>
+            <Label Text="{Binding Shift.AddsSum, Mode=OneWay, StringFormat='{0:0.00}'}" Grid.Row="2" Grid.Column="0" Style="{StaticResource ShiftStatsHeader}"/>
+            <ImageButton Source="add_money_96px.png" ClassId="Add" Style="{StaticResource ImgBtnStyle}" CornerRadius="15"
+                         Margin="10" Command="{Binding AddCommand}" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"/>
+
+            <Label Text="Изъято:" Grid.Row="3" Grid.Column="0" Style="{StaticResource ShiftStatsHeader}"/>
+            <Label Text="{Binding Shift.WithdrawalsSum, Mode=OneWay, StringFormat='{0:0.00}'}" Grid.Row="4" Grid.Column="0" Style="{StaticResource ShiftStatsHeader}"/>
+            <ImageButton Source="withdraw_money_96px.png" ClassId="Withdraw" Style="{StaticResource ImgBtnStyle}" CornerRadius="15"
+                         Margin="10" Command="{Binding WithdrawCommand}" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2"/>
+
+            <Label Text="Продажи:" Grid.Row="5" Grid.Column="0" Style="{StaticResource ShiftStatsHeader}"/>
+            <Label Text="{Binding Shift.SalesSum, Mode=OneWay, StringFormat='{0:0.00}'}" Grid.Row="5" Grid.Column="1" Style="{StaticResource ShiftStatsData}"/>
+
+            <Label Text="Возвраты:" Grid.Row="6" Grid.Column="0" Style="{StaticResource ShiftStatsHeader}"/>
+            <Label Text="{Binding Shift.ReturnsSum, Mode=OneWay, StringFormat='{0:0.00}'}" Grid.Row="6" Grid.Column="1" Style="{StaticResource ShiftStatsData}"/>
+
+            <Button Text="Начать" Grid.Row="7" Grid.ColumnSpan="2" Style="{StaticResource BigGreenBtn}" Command="{Binding StartCommand}"/>
+            <Button Text="Завершить" Grid.Row="8" Grid.ColumnSpan="2" Style="{StaticResource BigGreenBtn}" Command="{Binding FinishCommand}"/>
+
+            <!--#region Keyboard-->
+            <Grid Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="8" 
+                  IsVisible="{Binding KeyboardShown, Mode=OneWay}" x:Name="cKeyboard" 
+                  BackgroundColor="YellowGreen"
+                  Padding="0" Margin="0" ColumnSpacing="1" RowSpacing="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="SideMoneyLabel" Style="{StaticResource KeyboardLbl}" 
+                       Grid.Row="0" Grid.ColumnSpan="4" Text="{Binding SideMoney, Mode=TwoWay}"/>
+
+                <Button Text="7" Grid.Row="1" Grid.Column="0" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="8" Grid.Row="1" Grid.Column="1" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="9" Grid.Row="1" Grid.Column="2" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <ImageButton Source="clear_symbol_90px.png" Grid.Row="1" Grid.Column="3" 
+                             Style="{StaticResource KeyboardImgBtn}" Command="{Binding BackSpaceCommand}"/>
+
+                <Button Text="4" Grid.Row="2" Grid.Column="0" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="5" Grid.Row="2" Grid.Column="1" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="6" Grid.Row="2" Grid.Column="2" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <ImageButton Source="delete_90px.png" Grid.Row="2" Grid.Column="3" 
+                             Style="{StaticResource KeyboardImgBtn}" Command="{Binding ClearCommand}"/>
+
+                <Button Text="1" Grid.Row="3" Grid.Column="0" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="2" Grid.Row="3" Grid.Column="1" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="3" Grid.Row="3" Grid.Column="2" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="." Grid.Row="3" Grid.Column="3" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+
+                <Button Text="0" Grid.Row="4" Grid.Column="0" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <ImageButton Source="return_96px.png" Command="{Binding HideKeyboardCommand}" Grid.Row="4" Grid.Column="1" Style="{StaticResource KeyboardImgBtn}"/>
+                <Button Text="OK" Command="{Binding OperationCommand}" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource KeyboardBtn}"/>
+
+            </Grid>
+            <!--#endregion-->
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

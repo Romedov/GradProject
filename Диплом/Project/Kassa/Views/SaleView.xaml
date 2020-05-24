@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Kassa.Views.SaleView">
+    <ContentPage.Content>
+
+        <Grid RowSpacing="3" ColumnSpacing="3">
+            <!--#region Definitions-->
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!--#endregion-->
+
+            <!--#region Search-->
+
+            <Grid Grid.Row="0" Grid.ColumnSpan="4" ColumnSpacing="3" Margin="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Entry x:Name="BarcodeEntry" Placeholder="Код товара" Text="{Binding SearchBarcode, Mode=TwoWay}"
+                       TextColor="Black" FontSize="Medium" Grid.Column="0" Margin="0"/>
+                <ImageButton Source="search_90px.png" Command="{Binding SearchCommand}"
+                             Style="{StaticResource ImgBtnStyle}" 
+                             Padding="5" Grid.Column="1"/>
+                <ImageButton Source="barcode_scanner_104px.png" Command="{Binding SearchViaScanCommand}"
+                             Style="{StaticResource ImgBtnStyle}" 
+                             Padding="10" Grid.Column="2"/>
+            </Grid>
+
+            <!--#endregion-->
+
+            <!--#region Items-->
+            <Frame CornerRadius="0" BorderColor="ForestGreen" Padding="0" Margin="10,0" Grid.Row="1" Grid.ColumnSpan="4" >
+                <ListView ItemsSource="{Binding Receipt.Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" 
+                          HasUnevenRows="True" SeparatorVisibility="Default" SeparatorColor="Black">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Spacing="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="3">
+                                    <Label FontSize="Medium" LineBreakMode="WordWrap" Text="{Binding ItemName}" TextColor="Black"/>
+                                    <Label FontSize="Small" Text="{Binding Price, Mode=OneWay, StringFormat='Цена: {0:0.00}'}" TextColor="Black"/>
+                                    <Label FontSize="Small" Text="{Binding Discount, Mode=OneWay, StringFormat='Скидка: {0}%'}" TextColor="Black"/>
+                                    <Label FontSize="Small" Text="{Binding Quantity, Mode=OneWay, StringFormat='Количество: {0}'}" TextColor="Black"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
+            
+            
+            <!--#endregion-->
+
+            <!--#region Payment and List Controls-->
+
+            <Label Text="{Binding Receipt.TotalPrice, Mode=OneWay, StringFormat='Итог: {0:0.00}'}" Style="{StaticResource LabelHeader}" 
+                   LineBreakMode="CharacterWrap" Margin="10"
+                   Grid.Row="2" Grid.ColumnSpan="4"/>
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                         Orientation="Horizontal" Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="4">
+                <Label Text="Количество:" Style="{StaticResource LabelHeader}" Margin="10" 
+                       VerticalOptions="FillAndExpand" HorizontalOptions="Start"/>
+                <Entry FontSize="Medium" Placeholder="Кол-во" Text="{Binding Quantity, Mode=TwoWay}"
+                       VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" 
+                       HorizontalTextAlignment="Center" Grid.Row="3" 
+                       Grid.Column="2"  Grid.ColumnSpan="2" Margin="10"/>
+            </StackLayout>
+            
+            <ImageButton Source="checkmark_96px.png" Command="{Binding ChangeQuantityCommand}"
+                         Style="{StaticResource ImgBtnStyle}" Padding="10"
+                         Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"/>
+            <ImageButton Source="return_purchase_96px.png" Command="{Binding RemoveCommand}"
+                         Style="{StaticResource ImgBtnStyle}" 
+                         Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2"/>
+            
+            <ImageButton Source="card_payment_96px.png"
+                         Style="{StaticResource ImgBtnStyle}" 
+                         Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"/>
+            <ImageButton Source="paper_money_96px.png" Command="{Binding KeyboardVisualizeCommand}"
+                         Style="{StaticResource ImgBtnStyle}" 
+                         Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2"/>
+
+            <!--#endregion-->
+            
+            <!--#region Keyboard-->
+
+            <Grid Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="6" BackgroundColor="YellowGreen"
+                  x:Name="cKeyboard" IsVisible="{Binding KeyboardShown}"
+                  Padding="0" Margin="0" ColumnSpacing="1" RowSpacing="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.ColumnSpan="4" Text="К оплате:" Style="{StaticResource KeyboardLbl}" 
+                       HorizontalTextAlignment="Start" BackgroundColor="YellowGreen"/>
+
+                <Label Style="{StaticResource KeyboardLbl}" x:Name="PaymentLabel"
+                       Grid.Row="1" Grid.ColumnSpan="4" Text="{Binding Payment, Mode=TwoWay}"/>
+
+                <Button Text="7" Grid.Row="2" Grid.Column="0" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="8" Grid.Row="2" Grid.Column="1" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="9" Grid.Row="2" Grid.Column="2" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <ImageButton Source="clear_symbol_90px.png" Grid.Row="2" Grid.Column="3" 
+                             Style="{StaticResource KeyboardImgBtn}" Command="{Binding BackSpaceCommand}"/>
+
+                <Button Text="4" Grid.Row="3" Grid.Column="0" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="5" Grid.Row="3" Grid.Column="1" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="6" Grid.Row="3" Grid.Column="2" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <ImageButton Source="delete_90px.png" Grid.Row="3" Grid.Column="3" 
+                             Style="{StaticResource KeyboardImgBtn}" Command="{Binding ClearCommand}"/>
+
+                <Button Text="1" Grid.Row="4" Grid.Column="0" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="2" Grid.Row="4" Grid.Column="1" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="3" Grid.Row="4" Grid.Column="2" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <Button Text="." Grid.Row="4" Grid.Column="3" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+
+                <Button Text="0" Grid.Row="5" Grid.Column="0" Style="{StaticResource KeyboardBtn}" Clicked="KeyboardButton_Clicked"/>
+                <ImageButton Source="return_96px.png" Grid.Row="5" Grid.Column="1" 
+                             Style="{StaticResource KeyboardImgBtn}" Command="{Binding KeyboardVisualizeCommand}"/>
+                <Button Text="OK" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" 
+                        Style="{StaticResource KeyboardBtn}" Command="{Binding PostCommand}"/>
+
+            </Grid>
+
+            <!--#endregion-->
+
+        </Grid>
+        
+    </ContentPage.Content>
+</ContentPage>

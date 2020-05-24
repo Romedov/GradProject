@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:userControls="clr-namespace:Kassa.Views.UserControls"
+             mc:Ignorable="d"
+             x:Class="Kassa.Views.LoginView"
+             BackgroundColor="YellowGreen">
+    <ContentPage.Content>
+        
+        <FlexLayout Direction="Column" JustifyContent="Center" Padding="10">
+            
+            <Label Text="Логин:" Style="{StaticResource WhiteLabelHeader}"/>
+            
+            <StackLayout Orientation="Horizontal">
+                <Image Source="user_104px.png" Scale="0.3" Aspect="AspectFit" Margin="-35"/>
+                <Entry Placeholder="Логин" TextColor="White" x:Name="LoginEntry"
+                       HorizontalOptions="FillAndExpand" Text="{Binding Login}"
+                       BackgroundColor="YellowGreen" FontAttributes="Bold"/>
+            </StackLayout>
+
+            <Label Text="Пароль:" Style="{StaticResource WhiteLabelHeader}" Margin="0,20,0,0"/>
+
+            <StackLayout Orientation="Horizontal">
+                <Image Source="lock_104px.png" Scale="0.3" Aspect="AspectFit" Margin="-35"/>
+                <Entry Placeholder="Пароль" IsPassword="True" TextColor="White" x:Name="PasswordEntry"
+                       HorizontalOptions="FillAndExpand" Text="{Binding Path=Password}"
+                       BackgroundColor="YellowGreen"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label HorizontalOptions="FillAndExpand"/>
+                <userControls:FrameButton x:Name="LoginButton" VerticalOptions="End" HorizontalOptions="End" HorizontalTextAlignment="End"
+                        BackgroundColor="ForestGreen" ImageSource="enter_64px.png" Command="{Binding MyCommand}" Tapped="FrameButton_Tapped"
+                        FontSize="20" FontAttributes="Bold" TextColor="White" Text="Вход" CornerRadius="5" 
+                        Margin="0,20" Padding="5" Direction="RowReverse" HeightRequest="50" WidthRequest="130">
+                    <userControls:FrameButton.Triggers>
+                        <Trigger TargetType="userControls:FrameButton" Property="IsEnabled" Value="True">
+                            <Setter Property="BackgroundColor" Value="ForestGreen"/>
+                        </Trigger>
+                        <Trigger TargetType="userControls:FrameButton" Property="IsEnabled" Value="False">
+                            <Setter Property="BackgroundColor" Value="LightGray"/>
+                        </Trigger>
+                    </userControls:FrameButton.Triggers>
+                </userControls:FrameButton>
+            </StackLayout>
+
+        </FlexLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

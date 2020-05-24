@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Kassa.Views.ItemRegistrationView">
+    <ContentPage.Content>
+        <FlexLayout Direction="Column" JustifyContent="Center" Padding="10,25" BackgroundColor="Bisque">
+            <Label Text="Код:" Style="{StaticResource LabelHeader}"/>
+            <Entry Margin="0,0,0,10" Text="{Binding Barcode}" Unfocused="BarcodeEntry_Unfocused"/>
+            <Label Text="Наименование:" Style="{StaticResource LabelHeader}"/>
+            <Entry Margin="0,0,0,10" Text="{Binding Name}" Unfocused="NameEntry_Unfocused"/>
+            <Label Text="Цена:" Style="{StaticResource LabelHeader}"/>
+            <Entry Margin="0,0,0,10" Text="{Binding Price}" Keyboard="Telephone"/>
+            <Label Text="Скидка:" Style="{StaticResource LabelHeader}"/>
+            <Entry Margin="0,0,0,10" Text="{Binding Discount}" Keyboard="Telephone"/>
+            <Button Text="Внести в базу данных" Style="{StaticResource BigGreenBtn}" Command="{Binding RegisterCommand}"/>
+        </FlexLayout>
+    </ContentPage.Content>
+</ContentPage>

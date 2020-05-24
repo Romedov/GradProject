@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:userControls="clr-namespace:Kassa.Views.UserControls"
+             xmlns:local="clr-namespace:Kassa"
+             mc:Ignorable="d"
+             x:Class="Kassa.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--Global Styles-->
+            <Color x:Key="NavigationPrimary">#2196F3</Color>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
+                <Setter Property="BarTextColor" Value="White" />
+            </Style>
+
+            <Style x:Key="LabelHeader" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="WhiteLabelHeader" TargetType="Label" BasedOn="{StaticResource LabelHeader}">
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="TextColor" Value="White"/>
+            </Style>
+
+            <Style x:Key="MenuButton" TargetType="userControls:FrameButton">
+                <Style.Setters>
+                    <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                    <Setter Property="BackgroundColor" Value="ForestGreen"/>
+                    <Setter Property="TextColor" Value="White"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="FontAttributes" Value="Bold"/>
+                    <Setter Property="CornerRadius" Value="0"/>
+                    <Setter Property="Margin" Value="0,0"/>
+                    <Setter Property="Padding" Value="5"/>
+                    <Setter Property="Direction" Value="Row"/>
+                    <Setter Property="HeightRequest" Value="50"/>
+                    <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                </Style.Setters>
+
+                <Style.Triggers>
+                    <Trigger TargetType="userControls:FrameButton" Property="IsEnabled" Value="True">
+                        <Setter Property="BackgroundColor" Value="ForestGreen"/>
+                    </Trigger>
+                    <Trigger TargetType="userControls:FrameButton" Property="IsEnabled" Value="False">
+                        <Setter Property="BackgroundColor" Value="LightGray"/>
+                    </Trigger>
+                </Style.Triggers>
+
+            </Style>
+
+            <Style x:Key="ShiftStats" TargetType="Label">
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="Large"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="Margin" Value="10,0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="ShiftStatsHeader" TargetType="Label" BasedOn="{StaticResource ShiftStats}">
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                
+            </Style>
+
+            <Style x:Key="ShiftStatsData" TargetType="Label" BasedOn="{StaticResource ShiftStats}">
+                <Setter Property="HorizontalTextAlignment" Value="End"/>
+            </Style>
+
+            <Style x:Key="BigGreenBtn" TargetType="Button">
+                <Setter Property="CornerRadius" Value="60"/>
+                <Setter Property="FontSize" Value="Title"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="BackgroundColor" Value="ForestGreen"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+
+            <Style x:Key="KeyboardLbl" TargetType="Label">
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="End"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="60"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="10, 0"/>
+                <Setter Property="BackgroundColor" Value="White"/>
+            </Style>
+            <Style x:Key="KeyboardBtn" TargetType="Button">
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="Large"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="BackgroundColor" Value="DodgerBlue"/>
+                <Setter Property="BorderWidth" Value="0"/>
+            </Style>
+
+            <Style x:Key="ImgBtnStyle" TargetType="ImageButton">
+                <Style.Setters>
+                    <Setter Property="BackgroundColor" Value="ForestGreen"/>
+                    <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                    <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                    <Setter Property="Aspect" Value="AspectFit"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger TargetType="ImageButton" Property="IsEnabled" Value="True">
+                        <Setter Property="BackgroundColor" Value="ForestGreen"/>
+                    </Trigger>
+                    <Trigger TargetType="ImageButton" Property="IsEnabled" Value="False">
+                        <Setter Property="BackgroundColor" Value="LightGray"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="KeyboardImgBtn" TargetType="ImageButton" BasedOn="{StaticResource ImgBtnStyle}">
+                <Style.Setters>
+                    <Setter Property="BackgroundColor" Value="DodgerBlue"/>
+                    <Setter Property="Padding" Value="10"/>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger TargetType="ImageButton" Property="IsEnabled" Value="True">
+                        <Setter Property="BackgroundColor" Value="DodgerBlue"/>
+                    </Trigger>
+                    <Trigger TargetType="ImageButton" Property="IsEnabled" Value="False">
+                        <Setter Property="BackgroundColor" Value="LightGray"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+    
+</Application>
